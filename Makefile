@@ -26,3 +26,22 @@ pypy:
 pypy-dev:
 	docker build -t bearstech/pypy-dev:5.6 -f Dockerfile.pypy-dev .
 	docker tag bearstech/pypy-dev:5.6 bearstech/pypy-dev:latest
+
+pull:
+	docker pull bearstech/debian:stretch
+
+push:
+	docker push bearstech/python:3
+	docker push bearstech/python:3.5
+	docker push bearstech/python:latest
+	docker push bearstech/python-dev:3
+	docker push bearstech/python-dev:3.5
+	docker push bearstech/python-dev:latest
+	docker push bearstech/python:2
+	docker push bearstech/python:2.7
+	docker push bearstech/python-dev:2
+	docker push bearstech/python-dev:2.7
+	docker push bearstech/pypy:5.6
+	docker push bearstech/pypy:latest
+	docker push bearstech/pypy-dev:5.6
+	docker push bearstech/pypy-dev:latest
