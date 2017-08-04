@@ -18,3 +18,8 @@ python27:
 python27-dev:
 	docker build -t bearstech/python-dev:2.7 -f Dockerfile.27-dev .
 	docker tag bearstech/python-dev:2.7 bearstech/python-dev:2
+
+pypy:
+	docker build -t bearstech/pypy:5.6 -f Dockerfile.pypy .
+	docker tag bearstech/pypy:5.6 bearstech/pypy:latest
+
