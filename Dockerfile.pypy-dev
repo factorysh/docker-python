@@ -6,6 +6,7 @@ RUN apt-get update && \
 	ca-certificates \
         pypy-dev \
         pypy-setuptools \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && update-alternatives --install /usr/bin/python python /usr/bin/pypy 1
 
 RUN easy_install-pypy pip virtualenv wheel

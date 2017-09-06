@@ -3,5 +3,5 @@ FROM bearstech/debian:stretch
 RUN apt-get update && \
     apt-get install -y \
         pypy \
-    && rm -rf /var/lib/apt/lists/*
-
+    && rm -rf /var/lib/apt/lists/* \
+    && update-alternatives --install /usr/bin/python python /usr/bin/pypy 1
