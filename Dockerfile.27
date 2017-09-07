@@ -4,5 +4,5 @@ RUN apt-get update && \
     apt-get install -y \
         python2.7 \
     && rm -rf /var/lib/apt/lists/* \
-    && update-alternatives --install /usr/bin/python python /usr/bin/python2 1
+    && update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
 
