@@ -1,0 +1,10 @@
+---
+
+command:
+    "bash test_install.sh":
+        exit-status: 0
+        timeout: 120000
+        stdout:
+            - /Collecting pyyaml.*/
+            - /Successfully installed pyyaml.*/
+            - "/.*{.hello.: .world.}.*/"

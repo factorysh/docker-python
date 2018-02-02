@@ -1,0 +1,5 @@
+---
+
+command:
+    "python --version":
+        exit-status: 0

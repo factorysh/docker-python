@@ -1,4 +1,6 @@
 
+GOSS_VERSION := 0.3.5
+
 all: python3 python3-dev python27 python27-dev pypy pypy-dev
 
 python3:
@@ -45,3 +47,28 @@ push:
 	docker push bearstech/pypy:latest
 	docker push bearstech/pypy-dev:5.6
 	docker push bearstech/pypy-dev:latest
+
+bin/goss:
+	mkdir -p bin
+	curl -o bin/goss -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
+	chmod +x bin/goss
+
+test-2: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/goss \
+		-w /goss \
+		bearstech/python-dev:2 \
+		goss -g python-dev.yaml --vars vars/2.yaml validate --max-concurrent 4 --format documentation
+
+test-3: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests:/goss \
+		-w /goss \
+		bearstech/python-dev:3 \
+		goss -g python-dev.yaml --vars vars/3.yaml validate --max-concurrent 4 --format documentation
+
+tests: test-2 test-3

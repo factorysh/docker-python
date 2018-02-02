@@ -1,0 +1,6 @@
+---
+
+gossfile:
+    python_version.yaml: {}
+    git.yaml: {}
+    pip_install.yaml: {}
