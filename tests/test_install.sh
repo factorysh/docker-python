@@ -6,7 +6,7 @@ else
     virtualenv /tmp/venv
 fi
 
-cd /tmp/venv
+cd /tmp/venv || false
 ./bin/pip install wheel
 ./bin/pip install pyyaml
 ./bin/python -c "import yaml; print(yaml.load('hello: world'))"
