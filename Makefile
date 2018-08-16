@@ -24,6 +24,22 @@ push:
 	docker push bearstech/pypy-dev:5.6
 	docker push bearstech/pypy-dev:latest
 
+remove_image:
+	docker rmi bearstech/python:3
+	docker rmi bearstech/python:3.5
+	docker rmi bearstech/python:latest
+	docker rmi bearstech/python-dev:3
+	docker rmi bearstech/python-dev:3.5
+	docker rmi bearstech/python-dev:latest
+	docker rmi bearstech/python:2
+	docker rmi bearstech/python:2.7
+	docker rmi bearstech/python-dev:2
+	docker rmi bearstech/python-dev:2.7
+	docker rmi bearstech/pypy:5.6
+	docker rmi bearstech/pypy:latest
+	docker rmi bearstech/pypy-dev:5.6
+	docker rmi bearstech/pypy-dev:latest
+
 python3:
 	docker build -t bearstech/python:3 -f Dockerfile.3 .
 	docker tag bearstech/python:3 bearstech/python:3.5
