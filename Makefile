@@ -75,7 +75,7 @@ test-2: bin/goss
 	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
-		-v `pwd`/tests:/goss \
+		-v `pwd`/tests_python:/goss \
 		-w /goss \
 		bearstech/python-dev:2 \
 		goss -g python-dev.yaml --vars vars/2.yaml validate --max-concurrent 4 --format documentation
@@ -84,7 +84,7 @@ test-3: bin/goss
 	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
-		-v `pwd`/tests:/goss \
+		-v `pwd`/tests_python:/goss \
 		-w /goss \
 		bearstech/python-dev:3 \
 		goss -g python-dev.yaml --vars vars/3.yaml validate --max-concurrent 4 --format documentation
