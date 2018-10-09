@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if which python3; then
+if command -v python3; then
     python -m venv /tmp/venv
 else
     virtualenv /tmp/venv
