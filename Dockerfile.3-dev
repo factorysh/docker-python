@@ -1,6 +1,9 @@
 FROM bearstech/python:3
 
+ENV PIP_CACHE_DIR=/.cache/pip
+
 RUN set -eux \
+    &&  mkdir -p /.cache/pip \
     &&  update-alternatives --remove python /usr/bin/python3 \
     &&  apt-get update \
     &&  apt-get install -y --no-install-recommends \
