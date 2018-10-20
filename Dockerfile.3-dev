@@ -1,16 +1,12 @@
-FROM bearstech/python:3
+FROM bearstech/debian-dev:stretch
 
+ENV LANG=C.UTF-8
 ENV PIP_CACHE_DIR=/.cache/pip
 
 RUN set -eux \
     &&  mkdir -p /.cache/pip \
-    &&  update-alternatives --remove python /usr/bin/python3 \
     &&  apt-get update \
     &&  apt-get install -y --no-install-recommends \
-                build-essential \
-                git \
-                mercurial \
-                mercurial-common \
                 python3-dev \
                 python3-pip \
                 python3-setuptools \
