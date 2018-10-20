@@ -4,4 +4,4 @@ command:
     "python --version 2>&1":
         exit-status: 0
         stdout:
-            - /Python {{ .Vars.python_version }}.*/
+            - /{{ .Vars.python_version }}.*/
