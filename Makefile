@@ -98,4 +98,6 @@ test-pypy: bin/goss
 		bearstech/pypy-dev:5.6 \
 		goss -g python-dev.yaml --vars vars/pypy.yaml validate --max-concurrent 4 --format documentation
 
+down:
+
 tests: test-2 test-3 test-pypy
