@@ -1,12 +1,13 @@
 
 GOSS_VERSION := 0.3.6
+PYPY_VERSION := 7.1.0
 
 all: pull build
 
 pull:
 	docker pull bearstech/debian:stretch
 
-build: python3 python3-dev python27 python27-dev pypy pypy-dev
+build: python3 python3-dev python27 python27-dev pypy pypy-dev pypy-7
 
 push:
 	docker push bearstech/python:3
@@ -101,3 +102,21 @@ test-pypy: bin/goss
 down:
 
 tests: test-2 test-3 test-pypy
+
+src:
+	mkdir -p src
+
+pypy-bin: src
+	docker run --rm \
+		-v `pwd`/src:/src \
+		-w /src \
+		bearstech/debian-dev \
+		wget --continue https://bitbucket.org/pypy/pypy/downloads/pypy3.6-v${PYPY_VERSION}-linux64.tar.bz2
+	cd src && tar -xvjf pypy3.6-v${PYPY_VERSION}-linux64.tar.bz2
+
+pypy-7: pypy-bin
+	docker build \
+		-t bearstech/pypy:7 \
+		-f Dockerfile.pypy-7 \
+		--build-arg PYPY_VERSION=${PYPY_VERSION} \
+		.

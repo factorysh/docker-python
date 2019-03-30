@@ -1,0 +1,12 @@
+FROM bearstech/debian
+ARG PYPY_VERSION
+
+RUN set -eux \
+    &&  apt-get update \
+    &&  apt-get install -y --no-install-recommends \
+                  libexpat1 \
+    &&  apt-get clean \
+    &&  rm -rf /var/lib/apt/lists/*
+
+COPY src/pypy3.6-v${PYPY_VERSION}-linux64 /opt/pypy7
+RUN ln -s /opt/pypy7/bin/* /usr/local/bin/
