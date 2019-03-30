@@ -1,4 +1,4 @@
-FROM bearstech/debian
+FROM bearstech/debian:stretch
 ARG PYPY_VERSION
 
 RUN set -eux \
