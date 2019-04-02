@@ -1,11 +1,18 @@
-FROM bearstech/debian:stretch
+FROM bearstech/debian-dev:stretch
 ARG PYPY_VERSION
+
+ENV LANG=C.UTF-8
+ENV PIP_CACHE_DIR=/.cache/pip
 
 RUN set -eux \
     && echo "deb http://deb.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/backports.list \
     &&  apt-get update \
     &&  apt-get -t stretch-backports install -y --no-install-recommends \
                   pypy \
+                  pypy-setuptools \
     &&  apt-get clean \
     &&  rm -rf /var/lib/apt/lists/*
 
+RUN cd /tmp && wget https://bootstrap.pypa.io/get-pip.py \
+    &&  pypy get-pip.py \
+    &&  /usr/local/bin/pip install -U setuptools wheel
