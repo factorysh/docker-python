@@ -119,7 +119,7 @@ test-pypy7: bin/goss
 		-v `pwd`/tests_python:/goss \
 		-w /goss \
 		bearstech/pypy-dev:7 \
-		goss -g python-dev.yaml --vars vars/pypy.yaml validate --max-concurrent 4 --format documentation
+		goss -g python-dev.yaml --vars vars/pypy7.yaml validate --max-concurrent 4 --format documentation
 
 down:
 
