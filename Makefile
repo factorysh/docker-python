@@ -6,7 +6,7 @@ all: pull build
 pull:
 	docker pull bearstech/debian:stretch
 
-build: python3 python3-dev python27 python27-dev pypy pypy-dev
+build: python3 python3-dev python27 python27-dev pypy pypy-dev pypy-7 pypy-7-dev
 
 push:
 	docker push bearstech/python:3
@@ -62,9 +62,23 @@ pypy:
 	docker build -t bearstech/pypy:5.6 -f Dockerfile.pypy .
 	docker tag bearstech/pypy:5.6 bearstech/pypy:latest
 
-pypy-dev: pypy
+pypy-dev:
 	docker build -t bearstech/pypy-dev:5.6 -f Dockerfile.pypy-dev .
 	docker tag bearstech/pypy-dev:5.6 bearstech/pypy-dev:latest
+
+pypy-7:
+	docker build \
+		-t bearstech/pypy:7 \
+		-f Dockerfile.pypy-7 \
+		--build-arg PYPY_VERSION=${PYPY_VERSION} \
+		.
+
+pypy-7-dev:
+	docker build \
+		-t bearstech/pypy-dev:7 \
+		-f Dockerfile.pypy-7-dev \
+		--build-arg PYPY_VERSION=${PYPY_VERSION} \
+		.
 
 bin/goss:
 	mkdir -p bin
@@ -97,6 +111,15 @@ test-pypy: bin/goss
 		-w /goss \
 		bearstech/pypy-dev:5.6 \
 		goss -g python-dev.yaml --vars vars/pypy.yaml validate --max-concurrent 4 --format documentation
+
+test-pypy7: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests_python:/goss \
+		-w /goss \
+		bearstech/pypy-dev:7 \
+		goss -g python-dev.yaml --vars vars/pypy7.yaml validate --max-concurrent 4 --format documentation
 
 down:
 
