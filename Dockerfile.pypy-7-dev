@@ -15,3 +15,6 @@ RUN set -eux \
     &&  update-alternatives --install /usr/bin/python python /usr/bin/pypy 1
 
 RUN easy_install-pypy pip wheel virtualenv
+
+ARG GIT_VERSION
+LABEL com.bearstech.source.python=https://github.com/factorysh/docker-python/commit/${GIT_VERSION}
