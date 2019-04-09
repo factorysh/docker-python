@@ -10,3 +10,5 @@ RUN set -eux \
     &&  rm -rf /var/lib/apt/lists/* \
     &&  update-alternatives --install /usr/bin/python python /usr/bin/pypy 1
 
+ARG GIT_VERSION
+LABEL com.bearstech.source.python=https://github.com/factorysh/docker-python/commit/${GIT_VERSION}
