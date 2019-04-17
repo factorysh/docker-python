@@ -1,4 +1,3 @@
-
 GOSS_VERSION := 0.3.6
 GIT_VERSION := $(shell git rev-parse HEAD)
 GIT_DATE := $(shell git show -s --format=%ci HEAD)
