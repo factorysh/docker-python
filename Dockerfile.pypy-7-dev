@@ -18,3 +18,6 @@ RUN easy_install-pypy pip wheel virtualenv
 
 ARG GIT_VERSION
 LABEL com.bearstech.source.python=https://github.com/factorysh/docker-python/commit/${GIT_VERSION}
+
+ARG GIT_DATE
+LABEL com.bearstech.date.python=${GIT_DATE}
