@@ -10,8 +10,18 @@ RUN set -eux \
     &&  rm -rf /var/lib/apt/lists/* \
     &&  update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
-ARG GIT_VERSION
-LABEL com.bearstech.source.python=https://github.com/factorysh/docker-python/commit/${GIT_VERSION}
+# generated labels
 
+ARG GIT_VERSION
 ARG GIT_DATE
-LABEL com.bearstech.date.python=${GIT_DATE}
+ARG BUILD_DATE
+
+LABEL com.bearstech.image.revision_date=${GIT_DATE}
+
+LABEL org.opencontainers.image.authors=Bearstech
+
+LABEL org.opencontainers.image.revision=${GIT_VERSION}
+LABEL org.opencontainers.image.created=${BUILD_DATE}
+
+LABEL org.opencontainers.image.url=https://github.com/factorysh/docker-python
+LABEL org.opencontainers.image.source=https://github.com/factorysh/docker-python/blob/${GIT_VERSION}/Dockerfile.3
