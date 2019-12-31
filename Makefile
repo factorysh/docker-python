@@ -48,7 +48,7 @@ python35:
 	docker build \
 		$(DOCKER_BUILD_ARGS) \
 		--build-arg=DEBIAN_VERSION=stretch \
-		-t bearstech/python:3 \
+		-t bearstech/python:3.5 \
 		-f Dockerfile.3 \
 		.
 	docker tag bearstech/python:3.5 bearstech/python:3
@@ -58,7 +58,7 @@ python35-dev: python35
 	docker build \
 		$(DOCKER_BUILD_ARGS) \
 		--build-arg=DEBIAN_VERSION=stretch \
-		-t bearstech/python-dev:35 \
+		-t bearstech/python-dev:3.5 \
 		-f Dockerfile.3-dev \
 		.
 	docker tag bearstech/python-dev:3.5 bearstech/python-dev:3
