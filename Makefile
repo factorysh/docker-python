@@ -8,8 +8,9 @@ all: pull build
 
 pull:
 	docker pull bearstech/debian:stretch
+	docker pull bearstech/debian:buster
 
-build: python3 python3-dev python27 python27-dev pypy pypy-dev pypy-7 pypy-7-dev
+build: python35 python35-dev python37 python37-dev python27 python27-dev pypy pypy-dev pypy-7 pypy-7-dev
 
 push:
 	docker push bearstech/python:3
@@ -17,6 +18,7 @@ push:
 	docker push bearstech/python:latest
 	docker push bearstech/python-dev:3
 	docker push bearstech/python-dev:3.5
+	docker push bearstech/python-dev:3.7
 	docker push bearstech/python-dev:latest
 	docker push bearstech/python:2
 	docker push bearstech/python:2.7
@@ -33,6 +35,7 @@ remove_image:
 	docker rmi bearstech/python:latest
 	docker rmi bearstech/python-dev:3
 	docker rmi bearstech/python-dev:3.5
+	docker rmi bearstech/python-dev:3.7
 	docker rmi bearstech/python-dev:latest
 	docker rmi bearstech/python:2
 	docker rmi bearstech/python:2.7
@@ -43,23 +46,41 @@ remove_image:
 	docker rmi bearstech/pypy-dev:5.6
 	docker rmi bearstech/pypy-dev:latest
 
-python3:
-	 docker build \
+python35:
+	docker build \
 		$(DOCKER_BUILD_ARGS) \
-		-t bearstech/python:3 \
+		--build-arg=DEBIAN_VERSION=stretch \
+		-t bearstech/python:3.5 \
 		-f Dockerfile.3 \
 		.
-	docker tag bearstech/python:3 bearstech/python:3.5
-	docker tag bearstech/python:3 bearstech/python:latest
+	docker tag bearstech/python:3.5 bearstech/python:3
+	docker tag bearstech/python:3.5 bearstech/python:latest
 
-python3-dev: python3
-	 docker build \
+python35-dev: python35
+	docker build \
 		$(DOCKER_BUILD_ARGS) \
-		-t bearstech/python-dev:3 \
+		--build-arg=DEBIAN_VERSION=stretch \
+		-t bearstech/python-dev:3.5 \
 		-f Dockerfile.3-dev \
 		.
-	docker tag bearstech/python-dev:3 bearstech/python-dev:3.5
-	docker tag bearstech/python-dev:3 bearstech/python-dev:latest
+	docker tag bearstech/python-dev:3.5 bearstech/python-dev:3
+	docker tag bearstech/python-dev:3.5 bearstech/python-dev:latest
+
+python37:
+	docker build \
+		$(DOCKER_BUILD_ARGS) \
+		--build-arg=DEBIAN_VERSION=buster \
+		-t bearstech/python:3.7 \
+		-f Dockerfile.3 \
+		.
+
+python37-dev: python37
+	docker build \
+		$(DOCKER_BUILD_ARGS) \
+		--build-arg=DEBIAN_VERSION=buster \
+		-t bearstech/python-dev:3.7 \
+		-f Dockerfile.3-dev \
+		.
 
 python27:
 	 docker build \
@@ -123,14 +144,23 @@ test-2: bin/goss
 		bearstech/python-dev:2 \
 		goss -g python-dev.yaml --vars vars/2.yaml validate --max-concurrent 4 --format documentation
 
-test-3: bin/goss
+test-35: bin/goss
 	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests_python:/goss \
 		-w /goss \
-		bearstech/python-dev:3 \
-		goss -g python-dev.yaml --vars vars/3.yaml validate --max-concurrent 4 --format documentation
+		bearstech/python-dev:3.5 \
+		goss -g python-dev.yaml --vars vars/35.yaml validate --max-concurrent 4 --format documentation
+
+test-37: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests_python:/goss \
+		-w /goss \
+		bearstech/python-dev:3.7 \
+		goss -g python-dev.yaml --vars vars/37.yaml validate --max-concurrent 4 --format documentation
 
 test-pypy: bin/goss
 	@rm -rf tests/vendor
@@ -152,4 +182,4 @@ test-pypy7: bin/goss
 
 down:
 
-tests: test-2 test-3 test-pypy
+tests: test-2 test-35 test-37 test-pypy
