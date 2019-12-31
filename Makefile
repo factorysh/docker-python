@@ -151,7 +151,7 @@ test-35: bin/goss
 		-v `pwd`/tests_python:/goss \
 		-w /goss \
 		bearstech/python-dev:3.5 \
-		goss -g python-dev.yaml --vars vars/3.yaml validate --max-concurrent 4 --format documentation
+		goss -g python-dev.yaml --vars vars/35.yaml validate --max-concurrent 4 --format documentation
 
 test-37: bin/goss
 	@rm -rf tests/vendor
