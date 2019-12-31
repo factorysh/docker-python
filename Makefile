@@ -18,6 +18,7 @@ push:
 	docker push bearstech/python:latest
 	docker push bearstech/python-dev:3
 	docker push bearstech/python-dev:3.5
+	docker push bearstech/python-dev:3.7
 	docker push bearstech/python-dev:latest
 	docker push bearstech/python:2
 	docker push bearstech/python:2.7
@@ -34,6 +35,7 @@ remove_image:
 	docker rmi bearstech/python:latest
 	docker rmi bearstech/python-dev:3
 	docker rmi bearstech/python-dev:3.5
+	docker rmi bearstech/python-dev:3.7
 	docker rmi bearstech/python-dev:latest
 	docker rmi bearstech/python:2
 	docker rmi bearstech/python:2.7
@@ -71,7 +73,6 @@ python37:
 		-t bearstech/python:3.7 \
 		-f Dockerfile.3 \
 		.
-	docker tag bearstech/python:3.7 bearstech/python:3.7
 
 python37-dev: python37
 	docker build \
@@ -80,7 +81,6 @@ python37-dev: python37
 		-t bearstech/python-dev:3.7 \
 		-f Dockerfile.3-dev \
 		.
-	docker tag bearstech/python-dev:3.7 bearstech/python-dev:3.7
 
 python27:
 	 docker build \
