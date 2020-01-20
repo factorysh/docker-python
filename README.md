@@ -1,12 +1,12 @@
 Python docker images by bearstech
 ==================================
 
-2 variants of Python from Debian Stretch :
+2 variants of Python from Debian stretch/buster :
 
 - [bearstech/python-dev](https://hub.docker.com/r/bearstech/python-dev/)
 - [bearstech/python](https://hub.docker.com/r/bearstech/python/)
 
-All variants are available as tag for Python 2.7 3.5
+All variants are available as tag for Python 2.7 3.5 (stretch) and 3.7 (buster)
 
 We also provides 2 variants of Pypy from Debian Stretch :
 
