@@ -47,7 +47,7 @@ remove_image:
 	docker rmi bearstech/pypy-dev:latest
 
 python35:
-	docker build \
+	 docker build \
 		$(DOCKER_BUILD_ARGS) \
 		--build-arg=DEBIAN_VERSION=stretch \
 		-t bearstech/python:3.5 \
@@ -57,7 +57,7 @@ python35:
 	docker tag bearstech/python:3.5 bearstech/python:latest
 
 python35-dev: python35
-	docker build \
+	 docker build \
 		$(DOCKER_BUILD_ARGS) \
 		--build-arg=DEBIAN_VERSION=stretch \
 		-t bearstech/python-dev:3.5 \
@@ -67,7 +67,7 @@ python35-dev: python35
 	docker tag bearstech/python-dev:3.5 bearstech/python-dev:latest
 
 python37:
-	docker build \
+	 docker build \
 		$(DOCKER_BUILD_ARGS) \
 		--build-arg=DEBIAN_VERSION=buster \
 		-t bearstech/python:3.7 \
@@ -75,7 +75,7 @@ python37:
 		.
 
 python37-dev: python37
-	docker build \
+	 docker build \
 		$(DOCKER_BUILD_ARGS) \
 		--build-arg=DEBIAN_VERSION=buster \
 		-t bearstech/python-dev:3.7 \
