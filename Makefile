@@ -10,7 +10,7 @@ pull:
 	docker pull bearstech/debian:stretch
 	docker pull bearstech/debian:buster
 
-build: python35 python35-dev python37 python37-dev python27 python27-dev pypy pypy-dev pypy-7 pypy-7-dev
+build: python35 python35-dev python37 python37-dev python27 python27-dev pypy pypy-dev
 
 push:
 	docker push bearstech/python:3
