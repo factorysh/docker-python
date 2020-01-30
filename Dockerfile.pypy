@@ -1,6 +1,4 @@
-FROM bearstech/debian:stretch
-
-ENV LANG=C.UTF-8
+FROM bearstech/debian:buster
 
 RUN set -eux \
     &&  apt-get update \
