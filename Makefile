@@ -24,9 +24,9 @@ push:
 	docker push bearstech/python:2.7
 	docker push bearstech/python-dev:2
 	docker push bearstech/python-dev:2.7
-	docker push bearstech/pypy:5.6
+	docker push bearstech/pypy:7
 	docker push bearstech/pypy:latest
-	docker push bearstech/pypy-dev:5.6
+	docker push bearstech/pypy-dev:7
 	docker push bearstech/pypy-dev:latest
 
 remove_image:
@@ -41,9 +41,9 @@ remove_image:
 	docker rmi bearstech/python:2.7
 	docker rmi bearstech/python-dev:2
 	docker rmi bearstech/python-dev:2.7
-	docker rmi bearstech/pypy:5.6
+	docker rmi bearstech/pypy:7
 	docker rmi bearstech/pypy:latest
-	docker rmi bearstech/pypy-dev:5.6
+	docker rmi bearstech/pypy-dev:7
 	docker rmi bearstech/pypy-dev:latest
 
 python35:
@@ -153,7 +153,7 @@ test-pypy: bin/goss
 		-v `pwd`/tests_python:/goss \
 		-w /goss \
 		bearstech/pypy-dev:7 \
-		goss -g python-dev.yaml --vars vars/pypy7.yaml validate --max-concurrent 4 --format documentation
+		goss -g python-dev.yaml --vars vars/pypy.yaml validate --max-concurrent 4 --format documentation
 
 down:
 
