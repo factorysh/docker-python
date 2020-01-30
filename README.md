@@ -8,7 +8,7 @@ Python docker images by bearstech
 
 All variants are available as tag for Python 2.7 3.5 (stretch) and 3.7 (buster)
 
-We also provides 2 variants of Pypy from Debian Stretch :
+We also provides 2 variants of Pypy from Debian buster :
 
 - [bearstech/pypy-dev](https://hub.docker.com/r/bearstech/pypy-dev/)
 - [bearstech/pypy](https://hub.docker.com/r/bearstech/pypy/)
