@@ -5,6 +5,7 @@ FROM bearstech/debian:${DEBIAN_VERSION}
 ENV LANG=C.UTF-8
 
 RUN set -eux \
+    &&  export http_proxy=${HTTP_PROXY} \
     &&  apt-get update \
     &&  apt-get install -y --no-install-recommends \
                 python3 \
