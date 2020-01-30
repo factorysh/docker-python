@@ -10,7 +10,7 @@ pull:
 	docker pull bearstech/debian:stretch
 	docker pull bearstech/debian:buster
 
-build: python35 python35-dev python37 python37-dev python27 python27-dev pypy pypy-dev pypy-7 pypy-7-dev
+build: python35 python35-dev python37 python37-dev python27 python27-dev pypy pypy-dev
 
 push:
 	docker push bearstech/python:3
@@ -24,9 +24,9 @@ push:
 	docker push bearstech/python:2.7
 	docker push bearstech/python-dev:2
 	docker push bearstech/python-dev:2.7
-	docker push bearstech/pypy:5.6
+	docker push bearstech/pypy:7
 	docker push bearstech/pypy:latest
-	docker push bearstech/pypy-dev:5.6
+	docker push bearstech/pypy-dev:7
 	docker push bearstech/pypy-dev:latest
 
 remove_image:
@@ -41,9 +41,9 @@ remove_image:
 	docker rmi bearstech/python:2.7
 	docker rmi bearstech/python-dev:2
 	docker rmi bearstech/python-dev:2.7
-	docker rmi bearstech/pypy:5.6
+	docker rmi bearstech/pypy:7
 	docker rmi bearstech/pypy:latest
-	docker rmi bearstech/pypy-dev:5.6
+	docker rmi bearstech/pypy-dev:7
 	docker rmi bearstech/pypy-dev:latest
 
 python35:
@@ -101,34 +101,18 @@ python27-dev: python27
 pypy:
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
-		-t bearstech/pypy:5.6 \
+		-t bearstech/pypy:7 \
 		-f Dockerfile.pypy \
 		.
-	docker tag bearstech/pypy:5.6 bearstech/pypy:latest
+	docker tag bearstech/pypy:7 bearstech/pypy:latest
 
 pypy-dev:
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
-		-t bearstech/pypy-dev:5.6 \
+		-t bearstech/pypy-dev:7 \
 		-f Dockerfile.pypy-dev \
 		.
-	docker tag bearstech/pypy-dev:5.6 bearstech/pypy-dev:latest
-
-pypy-7:
-	 docker build \
-		$(DOCKER_BUILD_ARGS) \
-		-t bearstech/pypy:7 \
-		--build-arg PYPY_VERSION=${PYPY_VERSION} \
-		-f Dockerfile.pypy-7 \
-		.
-
-pypy-7-dev:
-	 docker build \
-		$(DOCKER_BUILD_ARGS) \
-		-t bearstech/pypy-dev:7 \
-		--build-arg PYPY_VERSION=${PYPY_VERSION} \
-		-f Dockerfile.pypy-7-dev \
-		.
+	docker tag bearstech/pypy-dev:7 bearstech/pypy-dev:latest
 
 bin/goss:
 	mkdir -p bin
@@ -168,17 +152,8 @@ test-pypy: bin/goss
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests_python:/goss \
 		-w /goss \
-		bearstech/pypy-dev:5.6 \
-		goss -g python-dev.yaml --vars vars/pypy.yaml validate --max-concurrent 4 --format documentation
-
-test-pypy7: bin/goss
-	@rm -rf tests/vendor
-	@docker run --rm -t \
-		-v `pwd`/bin/goss:/usr/local/bin/goss \
-		-v `pwd`/tests_python:/goss \
-		-w /goss \
 		bearstech/pypy-dev:7 \
-		goss -g python-dev.yaml --vars vars/pypy7.yaml validate --max-concurrent 4 --format documentation
+		goss -g python-dev.yaml --vars vars/pypy.yaml validate --max-concurrent 4 --format documentation
 
 down:
 
