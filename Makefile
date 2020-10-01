@@ -53,8 +53,6 @@ python35:
 		-t bearstech/python:3.5 \
 		-f Dockerfile.3 \
 		.
-	docker tag bearstech/python:3.5 bearstech/python:3
-	docker tag bearstech/python:3.5 bearstech/python:latest
 
 python35-dev: python35
 	 docker build \
@@ -63,8 +61,6 @@ python35-dev: python35
 		-t bearstech/python-dev:3.5 \
 		-f Dockerfile.3-dev \
 		.
-	docker tag bearstech/python-dev:3.5 bearstech/python-dev:3
-	docker tag bearstech/python-dev:3.5 bearstech/python-dev:latest
 
 python37:
 	 docker build \
@@ -73,6 +69,8 @@ python37:
 		-t bearstech/python:3.7 \
 		-f Dockerfile.3 \
 		.
+	docker tag bearstech/python:3.7 bearstech/python:3
+	docker tag bearstech/python:3.7 bearstech/python:latest
 
 python37-dev: python37
 	 docker build \
@@ -81,6 +79,8 @@ python37-dev: python37
 		-t bearstech/python-dev:3.7 \
 		-f Dockerfile.3-dev \
 		.
+	docker tag bearstech/python-dev:3.7 bearstech/python-dev:3
+	docker tag bearstech/python-dev:3.7 bearstech/python-dev:latest
 
 python27:
 	 docker build \
