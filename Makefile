@@ -2,7 +2,7 @@
 include Makefile.lint
 include Makefile.build_args
 
-GOSS_VERSION := 0.3.6
+GOSS_VERSION := 0.3.16
 
 all: pull build
 
@@ -69,12 +69,15 @@ python27-dev: python27
 		.
 	docker tag bearstech/python-dev:2.7 bearstech/python-dev:2
 
-bin/goss:
-	mkdir -p bin
-	curl -o bin/goss -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
-	chmod +x bin/goss
+goss: bin/goss-${GOSS_VERSION}
 
-test-2: bin/goss
+bin/goss-${GOSS_VERSION}:
+	mkdir -p bin
+	curl -o bin/goss-${GOSS_VERSION} -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
+	chmod +x bin/goss-${GOSS_VERSION}
+	cd bin && ln -sf goss-${GOSS_VERSION} goss
+
+test-2: goss
 	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
@@ -83,7 +86,7 @@ test-2: bin/goss
 		bearstech/python-dev:2 \
 		goss -g python-dev.yaml --vars vars/2.yaml validate --max-concurrent 4 --format documentation
 
-test-37: bin/goss
+test-37: goss
 	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
