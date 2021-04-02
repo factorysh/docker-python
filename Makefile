@@ -43,6 +43,14 @@ python37:
 	docker tag bearstech/python:3.7 bearstech/python:3
 	docker tag bearstech/python:3.7 bearstech/python:latest
 
+python39:
+	 docker build \
+		$(DOCKER_BUILD_ARGS) \
+		--build-arg=DEBIAN_VERSION=bullseye \
+		-t bearstech/python:3.9 \
+		-f Dockerfile.3 \
+		.
+
 python37-dev: python37
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
@@ -53,6 +61,13 @@ python37-dev: python37
 	docker tag bearstech/python-dev:3.7 bearstech/python-dev:3
 	docker tag bearstech/python-dev:3.7 bearstech/python-dev:latest
 
+python39-dev: python39
+	 docker build \
+		$(DOCKER_BUILD_ARGS) \
+		--build-arg=DEBIAN_VERSION=bullseye \
+		-t bearstech/python-dev:3.9 \
+		-f Dockerfile.3-dev \
+		.
 python27:
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
@@ -94,6 +109,15 @@ test-37: goss
 		-w /goss \
 		bearstech/python-dev:3.7 \
 		goss -g python-dev.yaml --vars vars/37.yaml validate --max-concurrent 4 --format documentation
+
+test-39: bin/goss
+	@rm -rf tests/vendor
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests_python:/goss \
+		-w /goss \
+		bearstech/python-dev:3.9 \
+		goss -g python-dev.yaml --vars vars/39.yaml validate --max-concurrent 4 --format documentation
 
 down:
 
