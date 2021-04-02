@@ -110,7 +110,7 @@ test-37: goss
 		bearstech/python-dev:3.7 \
 		goss -g python-dev.yaml --vars vars/37.yaml validate --max-concurrent 4 --format documentation
 
-test-39: bin/goss
+test-39: goss
 	@rm -rf tests/vendor
 	@docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
@@ -121,4 +121,4 @@ test-39: bin/goss
 
 down:
 
-tests: test-2 test-37
+tests: test-2 test-37 test-39
