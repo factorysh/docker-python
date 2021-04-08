@@ -9,13 +9,16 @@ all: pull build
 pull:
 	docker pull bearstech/debian:buster
 
-build: python37 python37-dev python27 python27-dev
+build: python37 python37-dev python39 python39-dev python27 python27-dev
 
 push:
 	docker push bearstech/python:3
+	docker push bearstech/python:3.7
+	docker push bearstech/python:3.9
 	docker push bearstech/python:latest
 	docker push bearstech/python-dev:3
 	docker push bearstech/python-dev:3.7
+	docker push bearstech/python-dev:3.9
 	docker push bearstech/python-dev:latest
 	docker push bearstech/python:2
 	docker push bearstech/python:2.7
@@ -24,9 +27,12 @@ push:
 
 remove_image:
 	docker rmi bearstech/python:3
+	docker rmi bearstech/python:3.7
+	docker rmi bearstech/python:3.9
 	docker rmi bearstech/python:latest
 	docker rmi bearstech/python-dev:3
 	docker rmi bearstech/python-dev:3.7
+	docker rmi bearstech/python-dev:3.9
 	docker rmi bearstech/python-dev:latest
 	docker rmi bearstech/python:2
 	docker rmi bearstech/python:2.7
