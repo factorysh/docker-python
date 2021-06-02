@@ -26,18 +26,8 @@ push:
 	docker push bearstech/python-dev:2.7
 
 remove_image:
-	docker rmi bearstech/python:3
-	docker rmi bearstech/python:3.7
-	docker rmi bearstech/python:3.9
-	docker rmi bearstech/python:latest
-	docker rmi bearstech/python-dev:3
-	docker rmi bearstech/python-dev:3.7
-	docker rmi bearstech/python-dev:3.9
-	docker rmi bearstech/python-dev:latest
-	docker rmi bearstech/python:2
-	docker rmi bearstech/python:2.7
-	docker rmi bearstech/python-dev:2
-	docker rmi bearstech/python-dev:2.7
+	docker rmi -f $(shell docker images -q --filter="reference=bearstech/python")
+	docker rmi -f $(shell docker images -q --filter="reference=bearstech/python-dev")
 
 python37:
 	 docker build \
