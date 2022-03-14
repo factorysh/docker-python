@@ -9,16 +9,18 @@ all: pull build
 pull:
 	docker pull bearstech/debian:buster
 
-build: python37 python37-dev python39 python39-dev python27 python27-dev
+build: python35 python35-dev python37 python37-dev python39 python39-dev python27 python27-dev
 
 push:
-	docker push bearstech/python:3
+	docker push bearstech/python:3.5
 	docker push bearstech/python:3.7
 	docker push bearstech/python:3.9
+	docker push bearstech/python:3
 	docker push bearstech/python:latest
-	docker push bearstech/python-dev:3
+	docker push bearstech/python-dev:3.5
 	docker push bearstech/python-dev:3.7
 	docker push bearstech/python-dev:3.9
+	docker push bearstech/python-dev:3
 	docker push bearstech/python-dev:latest
 	docker push bearstech/python:2
 	docker push bearstech/python:2.7
@@ -29,6 +31,16 @@ remove_image:
 	docker rmi -f $(shell docker images -q --filter="reference=bearstech/python")
 	docker rmi -f $(shell docker images -q --filter="reference=bearstech/python-dev")
 
+python35:
+	 docker build \
+		$(DOCKER_BUILD_ARGS) \
+		--build-arg=DEBIAN_VERSION=stretch \
+		-t bearstech/python:3.5 \
+		-f Dockerfile.3 \
+		.
+	docker tag bearstech/python:3.5 bearstech/python:3
+	docker tag bearstech/python:3.5 bearstech/python:latest
+
 python37:
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
@@ -36,8 +48,6 @@ python37:
 		-t bearstech/python:3.7 \
 		-f Dockerfile.3 \
 		.
-	docker tag bearstech/python:3.7 bearstech/python:3
-	docker tag bearstech/python:3.7 bearstech/python:latest
 
 python39:
 	 docker build \
@@ -47,6 +57,16 @@ python39:
 		-f Dockerfile.3 \
 		.
 
+python35-dev: python35
+	 docker build \
+		$(DOCKER_BUILD_ARGS) \
+		--build-arg=DEBIAN_VERSION=stretch \
+		-t bearstech/python-dev:3.5 \
+		-f Dockerfile.3-dev \
+		.
+	docker tag bearstech/python-dev:3.5 bearstech/python-dev:3
+	docker tag bearstech/python-dev:3.5 bearstech/python-dev:latest
+
 python37-dev: python37
 	 docker build \
 		$(DOCKER_BUILD_ARGS) \
@@ -54,8 +74,6 @@ python37-dev: python37
 		-t bearstech/python-dev:3.7 \
 		-f Dockerfile.3-dev \
 		.
-	docker tag bearstech/python-dev:3.7 bearstech/python-dev:3
-	docker tag bearstech/python-dev:3.7 bearstech/python-dev:latest
 
 python39-dev: python39
 	 docker build \
@@ -97,6 +115,15 @@ test-2: goss
 		bearstech/python-dev:2 \
 		goss -g python-dev.yaml --vars vars/2.yaml validate --max-concurrent 4 --format documentation
 
+test-35: goss
+	@rm -rf tests/vendor
+	@docker run --rm -t \
+		-v `pwd`/bin/goss:/usr/local/bin/goss \
+		-v `pwd`/tests_python:/goss \
+		-w /goss \
+		bearstech/python-dev:3.5 \
+		goss -g python-dev.yaml --vars vars/35.yaml validate --max-concurrent 4 --format documentation
+
 test-37: goss
 	@rm -rf tests/vendor
 	@docker run --rm -t \
@@ -117,4 +144,4 @@ test-39: goss
 
 down:
 
-tests: test-2 test-37 test-39
+tests: test-2 test-35 test-37 test-39

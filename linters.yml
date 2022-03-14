@@ -18,3 +18,5 @@ hadolint:
         - "--ignore=DL3013"
         - "--ignore=DL3016"
         - "--ignore=DL3028"
+        - "--ignore=DL3042"
+        - "--ignore=DL3048"
