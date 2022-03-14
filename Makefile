@@ -9,7 +9,7 @@ all: pull build
 pull:
 	docker pull bearstech/debian:buster
 
-build: python37 python37-dev python39 python39-dev python27 python27-dev
+build: python35 python35-dev python37 python37-dev python39 python39-dev python27 python27-dev
 
 push:
 	docker push bearstech/python:3.5
@@ -144,4 +144,4 @@ test-39: goss
 
 down:
 
-tests: test-2 test-37 test-39
+tests: test-2 test-35 test-37 test-39
