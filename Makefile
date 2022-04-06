@@ -8,140 +8,68 @@ all: pull build
 
 pull:
 	docker pull bearstech/debian:buster
+	docker pull bearstech/debian:bullseye
 
-build: python35 python35-dev python37 python37-dev python39 python39-dev python27 python27-dev
+build: python-2.7-buster python_dev-2.7-buster \
+	python-3.5-stretch python_dev-3.5-stretch \
+	python-3.7-buster python_dev-3.7-buster \
+	python-3.9-bullseye python_dev-3.9-bullseye
+	docker tag bearstech/python:2.7 bearstech/python:2
+	docker tag bearstech/python-dev:2.7 bearstech/python-dev:2
+	docker tag bearstech/python:3.9 bearstech/python:3
+	docker tag bearstech/python-dev:3.9 bearstech/python-dev:3
 
-push:
-	docker push bearstech/python:3.5
-	docker push bearstech/python:3.7
-	docker push bearstech/python:3.9
-	docker push bearstech/python:3
-	docker push bearstech/python:latest
-	docker push bearstech/python-dev:3.5
-	docker push bearstech/python-dev:3.7
-	docker push bearstech/python-dev:3.9
-	docker push bearstech/python-dev:3
-	docker push bearstech/python-dev:latest
-	docker push bearstech/python:2
-	docker push bearstech/python:2.7
-	docker push bearstech/python-dev:2
-	docker push bearstech/python-dev:2.7
+push-%:
+	$(eval version=$(shell echo $@ | cut -d- -f2))
+	docker push bearstech/python:$(version)
+	docker push bearstech/python-dev:$(version)
+
+push: push-2.7 push-2 push-3.5 push-3.7 push-3.9 push-3
 
 remove_image:
-	docker rmi -f $(shell docker images -q --filter="reference=bearstech/python")
-	docker rmi -f $(shell docker images -q --filter="reference=bearstech/python-dev")
+	docker rmi -f $(shell docker images -q --filter="reference=bearstech/python-dev") || true
+	docker rmi -f $(shell docker images -q --filter="reference=bearstech/python") || true
 
-python35:
-	 docker build \
-		$(DOCKER_BUILD_ARGS) \
-		--build-arg=DEBIAN_VERSION=stretch \
-		-t bearstech/python:3.5 \
-		-f Dockerfile.3 \
-		.
-	docker tag bearstech/python:3.5 bearstech/python:3
-	docker tag bearstech/python:3.5 bearstech/python:latest
 
-python37:
-	 docker build \
+python-%:
+	$(eval version=$(shell echo $@ | cut -d- -f2))
+	$(eval major_version=$(shell echo $(version) | cut -d. -f1))
+	$(eval debian_version=$(shell echo $@ | cut -d- -f3))
+	docker build \
 		$(DOCKER_BUILD_ARGS) \
-		--build-arg=DEBIAN_VERSION=buster \
-		-t bearstech/python:3.7 \
-		-f Dockerfile.3 \
+		--build-arg=DEBIAN_VERSION=$(debian_version) \
+		-t bearstech/python:$(version) \
+		-f Dockerfile.$(major_version) \
 		.
 
-python39:
-	 docker build \
+python_dev-%:
+	$(eval version=$(shell echo $@ | cut -d- -f2))
+	$(eval major_version=$(shell echo $(version) | cut -d. -f1))
+	$(eval debian_version=$(shell echo $@ | cut -d- -f3))
+	docker build \
 		$(DOCKER_BUILD_ARGS) \
-		--build-arg=DEBIAN_VERSION=bullseye \
-		-t bearstech/python:3.9 \
-		-f Dockerfile.3 \
+		--build-arg=DEBIAN_VERSION=$(debian_version) \
+		-t bearstech/python-dev:$(version) \
+		-f Dockerfile.$(major_version)-dev \
 		.
 
-python35-dev: python35
-	 docker build \
-		$(DOCKER_BUILD_ARGS) \
-		--build-arg=DEBIAN_VERSION=stretch \
-		-t bearstech/python-dev:3.5 \
-		-f Dockerfile.3-dev \
-		.
-	docker tag bearstech/python-dev:3.5 bearstech/python-dev:3
-	docker tag bearstech/python-dev:3.5 bearstech/python-dev:latest
-
-python37-dev: python37
-	 docker build \
-		$(DOCKER_BUILD_ARGS) \
-		--build-arg=DEBIAN_VERSION=buster \
-		-t bearstech/python-dev:3.7 \
-		-f Dockerfile.3-dev \
-		.
-
-python39-dev: python39
-	 docker build \
-		$(DOCKER_BUILD_ARGS) \
-		--build-arg=DEBIAN_VERSION=bullseye \
-		-t bearstech/python-dev:3.9 \
-		-f Dockerfile.3-dev \
-		.
-python27:
-	 docker build \
-		$(DOCKER_BUILD_ARGS) \
-		-t bearstech/python:2.7 \
-		-f Dockerfile.27 \
-		.
-	docker tag bearstech/python:2.7 bearstech/python:2
-
-python27-dev: python27
-	 docker build \
-		$(DOCKER_BUILD_ARGS) \
-		-t bearstech/python-dev:2.7 \
-		-f Dockerfile.27-dev \
-		.
-	docker tag bearstech/python-dev:2.7 bearstech/python-dev:2
-
-goss: bin/goss-${GOSS_VERSION}
-
-bin/goss-${GOSS_VERSION}:
+bin/goss:
 	mkdir -p bin
-	curl -o bin/goss-${GOSS_VERSION} -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
-	chmod +x bin/goss-${GOSS_VERSION}
-	cd bin && ln -sf goss-${GOSS_VERSION} goss
+	curl -o bin/goss -L https://github.com/aelsabbahy/goss/releases/download/v${GOSS_VERSION}/goss-linux-amd64
+	chmod +x bin/goss
 
-test-2: goss
+test-%: bin/goss
+	$(eval version=$(shell echo $@ | cut -d- -f2))
 	@rm -rf tests/vendor
-	@docker run --rm -t \
+	docker run --rm -t \
 		-v `pwd`/bin/goss:/usr/local/bin/goss \
 		-v `pwd`/tests_python:/goss \
 		-w /goss \
-		bearstech/python-dev:2 \
-		goss -g python-dev.yaml --vars vars/2.yaml validate --max-concurrent 4 --format documentation
+		bearstech/python-dev:$(version) \
+		goss -g python-dev.yaml --vars vars/$(version).yaml validate --max-concurrent 4 --format documentation
 
-test-35: goss
-	@rm -rf tests/vendor
-	@docker run --rm -t \
-		-v `pwd`/bin/goss:/usr/local/bin/goss \
-		-v `pwd`/tests_python:/goss \
-		-w /goss \
-		bearstech/python-dev:3.5 \
-		goss -g python-dev.yaml --vars vars/35.yaml validate --max-concurrent 4 --format documentation
 
-test-37: goss
-	@rm -rf tests/vendor
-	@docker run --rm -t \
-		-v `pwd`/bin/goss:/usr/local/bin/goss \
-		-v `pwd`/tests_python:/goss \
-		-w /goss \
-		bearstech/python-dev:3.7 \
-		goss -g python-dev.yaml --vars vars/37.yaml validate --max-concurrent 4 --format documentation
 
-test-39: goss
-	@rm -rf tests/vendor
-	@docker run --rm -t \
-		-v `pwd`/bin/goss:/usr/local/bin/goss \
-		-v `pwd`/tests_python:/goss \
-		-w /goss \
-		bearstech/python-dev:3.9 \
-		goss -g python-dev.yaml --vars vars/39.yaml validate --max-concurrent 4 --format documentation
+tests: test-2.7 test-3.5 test-3.7 test-3.9
 
 down:
-
-tests: test-2 test-35 test-37 test-39

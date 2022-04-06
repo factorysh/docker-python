@@ -1,4 +1,6 @@
-FROM bearstech/debian:buster
+ARG DEBIAN_VERSION
+
+FROM bearstech/debian:${DEBIAN_VERSION}
 
 ENV LANG=C.UTF-8
 
@@ -23,4 +25,4 @@ LABEL \
     org.opencontainers.image.revision=${GIT_VERSION} \
     org.opencontainers.image.created=${BUILD_DATE} \
     org.opencontainers.image.url=https://github.com/factorysh/docker-python \
-    org.opencontainers.image.source=https://github.com/factorysh/docker-python/blob/${GIT_VERSION}/Dockerfile.27
+    org.opencontainers.image.source=https://github.com/factorysh/docker-python/blob/${GIT_VERSION}/Dockerfile.2
